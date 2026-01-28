@@ -1,7 +1,16 @@
+# Création du namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devsecops
+
+---
+# Déploiement de l'application Python
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python-app-deploy
+  namespace: devsecops         # <-- On cible le namespace
   labels:
     app: python-app
 spec:
@@ -23,11 +32,14 @@ spec:
         env:
         - name: EXAMPLE_ENV
           value: "devsecops"
+
 ---
+# Service pour exposer l'application
 apiVersion: v1
 kind: Service
 metadata:
   name: python-app-service
+  namespace: devsecops        # <-- Même namespace que le déploiement
 spec:
   selector:
     app: python-app
